@@ -14,9 +14,9 @@ class PlaceController
         switch($_SERVER['REQUEST_METHOD'])
         {
             case 'GET' :
-                if(isset($_GET['plate']))
+                if(isset($_GET['place']))
                 {
-                    $this->getPlace($_GET['id']);
+                    $this->getPlace($_GET['place']);
                 }else{
                     $this->list();
                 }

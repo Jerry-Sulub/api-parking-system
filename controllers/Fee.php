@@ -11,12 +11,13 @@ class FeeController
     public function index()
     {
         header('Content-Type: application/json');
+        echo $_SERVER['REQUEST_METHOD'];
         switch($_SERVER['REQUEST_METHOD'])
         {
             case 'GET' :
                 if(isset($_GET['plate']))
                 {
-                    $this->getFee($_GET['plate'], $_GET['date'], $_GET['price']);
+                    $this->getFee($_GET['plate'], $_GET['place']);
                 }else{
                     $this->listFee();
                 }
@@ -24,8 +25,8 @@ class FeeController
             case 'POST' :
                 $this->addFee();
                 break;
-            case 'PUT' :
-                $this->updateFee($_GET['id']);
+            case 'PATCH' :
+                $this->updateFee();
                 break;
         }
 
@@ -51,12 +52,12 @@ class FeeController
      * @param $id
      * @return void
     */
-    public function getFee($plate, $date, $price)
+    public function getFee($plate, $place)
     {
         $fee = new FeeModel();
-        $data = $fee->getFee($plate, $date, $price);
+        $data = $fee->getFee($plate, $place);
         header("HTTP/1.1 200 OK");
-        echo json_encode($data);
+        echo json_encode(array('fee'=>$data));
     }
 
     /**
@@ -76,10 +77,8 @@ class FeeController
             $_POST['elapset_time'],
             $_POST['price'],
         );
-
-        $msg = $status ? 'Guardado de manera satisfactoria': 'Error al guardar';
         header("HTTP/1.1 200 OK");
-        echo json_encode(array('Message'=>$msg));   
+        echo json_encode($status);
     }
 
     /**
@@ -87,15 +86,16 @@ class FeeController
      * @param $id
      * @return void
      */
-    public function updateFee($id)
+    public function updateFee()
     {
-        $product = new FeeModel();
-        $_PUT=json_decode(file_get_contents('php://input'),true);
-        $status = $product->updateFee(
-            $_PUT['departure_time'],
-            $_PUT['elapset_time'],
-            $_PUT['price'],
-            $id
+        
+        $fee = new FeeModel();
+        $_PATCH=json_decode(file_get_contents('php://input'),true);
+        $status = $fee->updateFee(
+            $_PATCH['plate'],
+            $_PATCH['departure_time'],
+            $_PATCH['elapset_time'],
+            $_PATCH['price'],
         );
         $msg = $status ? 'Actualización satisfactoria': 'Error al actualizar';
         header("HTTP/1.1 200 OK");

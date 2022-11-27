@@ -9,6 +9,8 @@ require_once "config/Routes.php";
 require_once "config/Connection.php";
 require_once "controllers/Place.php";
 require_once "controllers/Fee.php";
+require_once "models/PlaceModel.php";
+require_once "models/FeeModel.php";
 
 if (isset($_GET['c'])) {
 
