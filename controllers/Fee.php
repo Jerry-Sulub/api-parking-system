@@ -11,7 +11,6 @@ class FeeController
     public function index()
     {
         header('Content-Type: application/json');
-        echo $_SERVER['REQUEST_METHOD'];
         switch($_SERVER['REQUEST_METHOD'])
         {
             case 'GET' :
@@ -43,7 +42,7 @@ class FeeController
         $fee = new FeeModel();
         $data = $fee->listFee();
         header("HTTP/1.1 200 OK");
-        echo json_encode($data);
+        echo json_encode(['fees' => $data]);
     }
 
     /**
@@ -78,7 +77,7 @@ class FeeController
             $_POST['price'],
         );
         header("HTTP/1.1 200 OK");
-        echo json_encode($status);
+        echo json_encode(['result' => $status]);
     }
 
     /**
@@ -96,9 +95,8 @@ class FeeController
             $_PATCH['departure_time'],
             $_PATCH['elapset_time'],
             $_PATCH['price'],
-        );
-        $msg = $status ? 'Actualización satisfactoria': 'Error al actualizar';
+        );        
         header("HTTP/1.1 200 OK");
-        echo json_encode(array('Message' => $msg));
+        echo json_encode(array('result' => $status));
     }
 }

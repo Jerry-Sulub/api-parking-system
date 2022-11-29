@@ -42,7 +42,7 @@ class PlaceController
         $fee = new PlaceModel();
         $data = $fee->listPlace();
         header("HTTP/1.1 200 OK");
-        echo json_encode($data);
+        echo json_encode(['places'=>$data]);
     }
 
     /**
@@ -56,7 +56,7 @@ class PlaceController
         $fee = new PlaceModel();
         $data = $fee->getPlace($id) ;
         header("HTTP/1.1 200 OK");
-        echo json_encode($data);
+        echo json_encode(['place'=>$data]);
     }
 
     /**
@@ -70,10 +70,8 @@ class PlaceController
         $status = $place->insert(
             $_POST['id']
         );
-
-        $msg = $status ? 'Guardado de manera satisfactoria': 'Error al guardar';
         header("HTTP/1.1 200 OK");
-        echo json_encode(array('Message'=>$msg));   
+        echo json_encode(array('result'=>$status));   
     }
 
     /**
@@ -89,8 +87,7 @@ class PlaceController
             $id,
             $_PUT['status']
         );
-        $msg = $status ? 'Actualización satisfactoria': 'Error al actualizar';
         header("HTTP/1.1 200 OK");
-        echo json_encode(array('Message' => $msg));
+        echo json_encode(array('result' => $status));
     }
 }
